@@ -7,7 +7,7 @@
  *  (markup - trigger(s))  <a data-jb-hiddenmenu-trigger="abc">Menu Trigger</a>
  *  (js init)              var myHiddenMenu = new jb.HiddenMenu(menu-object, menu-object-instance-id, opts);
  */
-(function ($, JB, cbutil, undefined) {
+(function ($, JB, undefined) {
     'use strict';
     JB.HiddenMenu = function(el, instanceId, opts) {
         var defaultOpts = {
@@ -77,7 +77,7 @@
                 $prevItem = this.$menuItems.eq(prevIdx),
                 $nextItem = this.$menuItems.eq(nextIdx),
                 $letterItem;
-            if (keycode === cbutil.keys.up) {
+            if (keycode === this.keys.up) {
                 if ($prevItem.length && $prevItem.hasClass(this.opts.activeMenuItemsClass)) {
                     prevIdx --;
                     $prevItem = this.$menuItems.eq(prevIdx);
@@ -97,7 +97,7 @@
                         this.$activeMenuItem = $prevItem;
                     }
                 }
-            } else if (keycode === cbutil.keys.down) {
+            } else if (keycode === this.keys.down) {
                 if ($nextItem.length && $nextItem.hasClass(this.opts.activeMenuItemsClass)) {
                     nextIdx ++;
                     $nextItem = this.$menuItems.eq(nextIdx);
@@ -138,11 +138,11 @@
             if (e.altKey || e.ctrlKey) { //modifier key
                 return true; //continue propagation
             }
-            if (e.type === 'click' || e.keyCode === cbutil.keys.enter || e.keyCode === cbutil.keys.space) { //click, space or enter
+            if (e.type === 'click' || e.keyCode === this.keys.enter || e.keyCode === this.keys.space) { //click, space or enter
                 e.preventDefault();
                 this.toggleMenu($target);
                 return false; //stop further propagation
-            } else if (e.keyCode === cbutil.keys.down) {
+            } else if (e.keyCode === this.keys.down) {
                 e.preventDefault();
                 this.$activeTrigger = $target;
                 this.showMenu();
@@ -150,10 +150,10 @@
                 this.activeMenuItemIdx = this.$menuItems.length; //hackish?
                 this.navigateMenuItems(e.keyCode);
                 return false; //stop further propagation
-            } else if (e.keyCode === cbutil.keys.tab) {
+            } else if (e.keyCode === this.keys.tab) {
                 this.hideMenu();
                 return true; //continue propagation
-            } else if (e.keyCode === cbutil.keys.esc) {
+            } else if (e.keyCode === this.keys.esc) {
                 if (this.$menu.hasClass('active')) {
                     e.preventDefault();
                     this.hideMenu();
@@ -172,7 +172,7 @@
             if (e.altKey || e.ctrlKey) { //modifier key
                 return true; //continue propagation
             }
-            if (e.type === 'click' || e.keyCode === cbutil.keys.enter || e.keyCode === cbutil.keys.space) { //click, space or enter
+            if (e.type === 'click' || e.keyCode === this.keys.enter || e.keyCode === this.keys.space) { //click, space or enter
                 e.preventDefault();
                 if (!$target.hasClass(this.opts.activeMenuItemsClass)) {
                     this.$activeMenuItem = $target;
@@ -184,14 +184,14 @@
                     this.opts.menuItemCallback(this);
                 }
                 return false; //stop further propagation
-            } else if (e.keyCode === cbutil.keys.down || e.keyCode === cbutil.keys.up) { //up, down arrows
+            } else if (e.keyCode === this.keys.down || e.keyCode === this.keys.up) { //up, down arrows
                 e.preventDefault();
                 this.navigateMenuItems(e.keyCode);
                 return false; //stop further propagation
-            } else if (e.keyCode === cbutil.keys.tab) {
+            } else if (e.keyCode === this.keys.tab) {
                 this.hideMenu();
                 return true; //continue propagation
-            } else if (e.keyCode === cbutil.keys.esc) {
+            } else if (e.keyCode === this.keys.esc) {
                 e.preventDefault();
                 this.hideMenu();
                 this.setFocus(this.$activeTrigger);
@@ -222,7 +222,7 @@
                 var $this = $(this),
                     myLetterKey = $this.text().charAt(0).toLowerCase();
                 $this.attr('id', myObj.id + '-item' + idx);
-                myObj.menuItemsLetterKey.push(cbutil.keys[myLetterKey]);
+                myObj.menuItemsLetterKey.push(myObj.keys[myLetterKey]);
             });
             this.$menu.find(this.opts.menuItemsPresentationOnlySelector).attr('role','presentation');
         },
