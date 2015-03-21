@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>JB.HiddenMenu Demo Page</title>
+
+    <!-- Bootstrap, included ONLY for demo, not a dependency -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" />
+
+    <!-- demo css -->
+    <link rel="stylesheet" href="demo.css" />
+</head>
+<body>
+<div class="container">
+
+    <div class="starter-template">
+        <h1>JB.HiddenMenu Demo Page</h1>
+        <p class="lead">Sometimes you just need a hidden menu component with baked in screen reader and keyboard
+            accessibility.</p>
+
+        <h2>Default Options</h2>
+        <p>By default the menu just shows a list of links which the page will navigate to when triggered.  Like a Jump Menu.</p>
+        <div><button class="btn btn-primary" data-jb-hiddenmenu-trigger="link-chooser" tabindex="0">Check These Out <span
+                class="sr-only"> Menu of External Links</span></button></div>
+        <div data-jb-hiddenmenu="link-chooser" class="link-chooser-menu">
+            <div class="middle-wrapper">
+                <div class="inner-wrapper">
+                    <ul class="list-group">
+                        <li class="list-group-item"><a href="https://fishandvine.com">Fish and Vine</a></li>
+                        <li class="list-group-item"><a href="https://www.facebook.com/chamelea">Facebook</a></li>
+                        <li class="list-group-item"><a href="https://github.com/chamelea">GitHub</a></li>
+                        <li class="list-group-item"><a href="https://www.linkedin.com/in/juliabeach">LinkedIn</a></li>
+                        <li class="list-group-item"><a href="https://twitter.com/Chamelea">Twitter</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <hr />
+
+        <h2>Custom Markup Options</h2>
+
+        <hr />
+
+        <h2>Custom Action Callback Option</h2>
+
+        <hr />
+    </div>
+
+</div>
+
+<!-- initializations of various menu examples -->
+<script>
+    (function ($, JB, undefined) {
+        $(function() {
+            'use strict';
+            JB.hiddenMenus = JB.hiddenMenus || {};
+            //**********************************************************************************************************************
+            // JB.HiddenMenu initializations
+            //**********************************************************************************************************************
+            $(document).find('[data-jb-hiddenmenu]').each(function(idx)
+            {
+                var $this = $(this), thisId = $this.id || 'jbHiddenMenu' + idx, menuName = $this.attr('data-jb-hiddenmenu');
+                $this.attr('id', thisId);
+                switch (menuName)
+                {
+                    case 'ca-picker':
+                        JB.hiddenMenus[thisId] = new JB.HiddenMenu(this, thisId, {
+                            menuItemsSelector: 'dd > a',
+                            menuItemsPresentationOnlySelector: 'dl, dt, dd' //will get role="presentation" for AT
+                        });
+                        break;
+                    case 'bb-picker':
+                        JB.hiddenMenus[thisId] = new JB.HiddenMenu(this, thisId, {
+                            menuItemCallback: function (menu)
+                            {
+                                var $panes = menu.$menu.closest('.caTable').find('.bbPane');
+                                menu.$activeTrigger.text(menu.$activeMenuItem.attr('data-menuDisplayText'));
+                                $panes.removeClass('active').eq(menu.activeMenuItemIdx).addClass('active');
+                            }
+                        });
+                        break;
+                    default:
+                        JB.hiddenMenus[thisId] = new JB.HiddenMenu(this, thisId);
+                        break;
+                }
+            });
+        });
+    }(jQuery, window.JB = window.JB || {}));
+</script>
+
+<!-- jQuery (a dependency for now) -->
+<script src="jquery-1.7.2.min.js"></script>
+
+<!-- Bootstrap, included ONLY for demo, not a dependency -->
+<script src="bootstrap/js/bootstrap.min.js"></script>
+
+<!-- This is the file that has all the magic. -->
+<script src="jb.hiddenmenu.js"></script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+.link-chooser-menu {
+    display: none;
+    position: absolute;
+    width: 170px;
+}
+.link-chooser-menu.active {
+    display: block;
+}
