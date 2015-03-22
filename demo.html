@@ -20,35 +20,84 @@
     <div class="starter-template">
         <h1>JB.HiddenMenu Demo Page</h1>
         <p class="lead">Sometimes you just need a hidden menu component with baked in screen reader and keyboard
-            accessibility.</p>
+            accessibility.  You provide the HTML + CSS and drop in the JS + a couple custom data attributes to
+            make it work.</p>
 
-        <h2>Default Options</h2>
-        <p>By default the menu just shows a list of links which the page will navigate to when triggered.  Like a Jump Menu.</p>
-        <div><button class="btn btn-primary" data-jb-hiddenmenu-trigger="link-chooser" tabindex="0">Check These Out <span
-                class="sr-only"> Menu of External Links</span></button></div>
-        <div data-jb-hiddenmenu="link-chooser" class="link-chooser-menu">
-            <div class="middle-wrapper">
-                <div class="inner-wrapper">
-                    <ul class="list-group">
-                        <li class="list-group-item"><a href="http://www.fishandvine.com">Fish and Vine</a></li>
-                        <li class="list-group-item"><a href="https://www.facebook.com/chamelea">Facebook</a></li>
-                        <li class="list-group-item"><a href="https://github.com/chamelea">GitHub</a></li>
-                        <li class="list-group-item"><a href="https://www.linkedin.com/in/juliabeach">LinkedIn</a></li>
-                        <li class="list-group-item"><a href="https://twitter.com/Chamelea">Twitter</a></li>
-                    </ul>
-                </div>
+        <hr />
+
+        <h2>Demos</h2>
+
+        <h3>Default</h3>
+        <p>By default the menu just shows a list of links to which the page will navigate when triggered.</p>
+        <div class="demo-wrapper">
+            <button data-jb-hiddenmenu-trigger="link-jumper" type="button" class="btn btn-primary">
+            Jump to... </button>
+            <div data-jb-hiddenmenu="link-jumper" class="link-chooser-menu">
+                <ul class="list-group">
+                    <li class="list-group-item"><a href="https://www.facebook.com/chamelea">Facebook</a></li>
+                    <li class="list-group-item"><a href="http://www.fishandvine.com">Fish and Vine</a></li>
+                    <li class="list-group-item"><a href="https://github.com/chamelea">GitHub</a></li>
+                    <li class="list-group-item"><a href="https://www.linkedin.com/in/juliabeach">LinkedIn</a></li>
+                    <li class="list-group-item"><a href="https://twitter.com/Chamelea">Twitter</a></li>
+                </ul>
             </div>
         </div>
 
         <hr />
 
-        <h2>Custom Markup Options</h2>
+        <h3>Custom Markup</h3>
+        <p>If you need to support markup other than the default li > a structure expected by default,
+            you can pass in alternate selectors for menu-items and presentation only nodes.</p>
+        <div class="demo-wrapper">
+            <button data-jb-hiddenmenu-trigger="link-jumper-buttons" type="button" class="btn btn-danger">Jump to... </button>
+            <div data-jb-hiddenmenu="link-jumper-buttons" class="link-chooser-menu">
+                <button type="button" class="btn btn-primary" href="https://www.facebook.com/chamelea">Facebook</button>
+                <button type="button" class="btn btn-success" href="http://www.fishandvine.com">Fish and Vine</button>
+                <button type="button" class="btn btn-default" href="https://github.com/chamelea">GitHub</button>
+                <button type="button" class="btn btn-warning" href="https://www.linkedin.com/in/juliabeach">LinkedIn</button>
+                <button type="button" class="btn btn-info" href="https://twitter.com/Chamelea">Twitter</button>
+            </div>
+        </div>
 
         <hr />
 
-        <h2>Custom Action Callback Option</h2>
-
+        <div class="demo-images pull-right">
+            <figure>
+                <img src="https://pbs.twimg.com/media/B_Jo35QU8AAyHcT.jpg"
+                     class="img-thumbnail" />
+                <figcaption>San Diego at Night - Street View</figcaption>
+            </figure>
+        </div>
+        <h3>Custom Action</h3>
+        <p>You may need your hidden menu to do some action on the same page instead of acting like a Jump menu.
+            Just pass in a function to overwrite the default for this.</p>
+        <div class="demo-wrapper">
+            <button data-jb-hiddenmenu-trigger="image-picker" class="btn btn-warning">Pick a new image...</button>
+            <div data-jb-hiddenmenu="image-picker" class="link-chooser-menu">
+                <ul class="list-group">
+                    <li class="list-group-item"><a class="text-muted"
+                                                   data-img-src="https://pbs.twimg.com/media/B_Jo35QU8AAyHcT.jpg">
+                        San Diego at Night - Street View</a></li>
+                    <li class="list-group-item"><a
+                                                   data-img-src="https://pbs.twimg.com/media/B_Jo35SU8AA5T1f.jpg">
+                        San Diego at Night - Water View</a></li>
+                    <li class="list-group-item"><a
+                            data-img-src="https://pbs.twimg.com/media/B-ZDcJoIYAAUZnA.jpg">Snowy Shed with
+                        Flamingo Statue and phrase "Beach House?"</a></li>
+                </ul>
+            </div>
+        </div>
         <hr />
+
+        <h2>JB.HiddenMenu TBD:</h2>
+        <ul>
+            <li>Unit Tests</li>
+            <li>Demo Page Online</li>
+            <li>Perf Analysis</li>
+            <li>Documentation</li>
+            <li>Improve Type Ahead Function</li>
+            <li>Improve A11y of these Examples</li>
+        </ul>
     </div>
 
 </div>
@@ -73,19 +122,22 @@
                 $this.attr('id', thisId);
                 switch (menuName)
                 {
-                    case 'ca-picker':
+                    case 'link-jumper-buttons':
                         JB.hiddenMenus[thisId] = new JB.HiddenMenu(this, thisId, {
-                            menuItemsSelector: 'dd > a',
-                            menuItemsPresentationOnlySelector: 'dl, dt, dd' //will get role="presentation" for AT
+                            menuItemsSelector: 'button',
+                            menuItemsPresentationOnlySelector: '' //will get role="presentation" for AT
                         });
                         break;
-                    case 'bb-picker':
+                    case 'image-picker':
                         JB.hiddenMenus[thisId] = new JB.HiddenMenu(this, thisId, {
-                            menuItemCallback: function (menu)
-                            {
-                                var $panes = menu.$menu.closest('.caTable').find('.bbPane');
-                                menu.$activeTrigger.text(menu.$activeMenuItem.attr('data-menuDisplayText'));
-                                $panes.removeClass('active').eq(menu.activeMenuItemIdx).addClass('active');
+                            activeMenuItemsClass : 'text-muted',
+                            menuItemCallbackEarly: function (menu) {
+                                return true;
+                            },
+                            menuItemCallbackLate: function (menu) {
+                                var $img = $(document).find('.demo-images img');
+                                $img.attr('src', menu.$activeMenuItem.attr('data-img-src'));
+                                $img.next('figcaption').text(menu.$activeMenuItem.text());
                             }
                         });
                         break;

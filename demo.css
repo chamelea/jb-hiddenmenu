@@ -1,8 +1,31 @@
+.demo-wrapper {
+    position: relative;
+}
 .link-chooser-menu {
     display: none;
     position: absolute;
     width: 170px;
+    left: 87px;
+    top: 0;
+    z-index: 1;
 }
 .link-chooser-menu.active {
     display: block;
+}
+.link-chooser-menu[data-jb-hiddenmenu="link-jumper-buttons"] {
+    width: 600px;
+    left: 91px;
+}
+hr {
+    clear: both;
+}
+.link-chooser-menu[data-jb-hiddenmenu="image-picker"] {
+    width: 300px;
+    left: 147px;
+}
+.demo-images {
+    margin-bottom: 20px;
+}
+.demo-images img {
+    max-width: 600px;
 }

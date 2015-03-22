@@ -14,8 +14,11 @@
             menuItemsSelector : 'li > a',
             menuItemsPresentationOnlySelector : 'ul, li', //will get role="presentation" for AT
             activeMenuItemsClass : 'active',
-            menuItemCallback : function(menu) {
-                document.location.href = encodeURI(menu.$activeMenuItem.attr('href')); //TODO: better uri encoding params?
+            menuItemCallbackEarly : function(menu) {
+                window.open(encodeURI(menu.$activeMenuItem.attr('href')),'_blank'); //TODO: better uri encoding params?
+            },
+            menuItemCallbackLate : function(menu) {
+                return true;
             }
         };
         this.opts = $.extend(defaultOpts, opts);
@@ -70,14 +73,14 @@
         navigateMenuItems : function(keycode) {
             //TODO: refactor & simplify this code
             var firstIdx = 0,
-                lastIdx = this.$menuItems.length,
+                lastIdx = this.$menuItems.length -1,
                 prevIdx = this.activeMenuItemIdx - 1,
                 nextIdx = this.activeMenuItemIdx + 1,
                 letterIdx,
                 $prevItem = this.$menuItems.eq(prevIdx),
                 $nextItem = this.$menuItems.eq(nextIdx),
                 $letterItem;
-            if (keycode === this.keys.up) {
+            if (keycode === this.keys.UP) {
                 if ($prevItem.length && $prevItem.hasClass(this.opts.activeMenuItemsClass)) {
                     prevIdx --;
                     $prevItem = this.$menuItems.eq(prevIdx);
@@ -97,7 +100,7 @@
                         this.$activeMenuItem = $prevItem;
                     }
                 }
-            } else if (keycode === this.keys.down) {
+            } else if (keycode === this.keys.DOWN) {
                 if ($nextItem.length && $nextItem.hasClass(this.opts.activeMenuItemsClass)) {
                     nextIdx ++;
                     $nextItem = this.$menuItems.eq(nextIdx);
@@ -138,11 +141,13 @@
             if (e.altKey || e.ctrlKey) { //modifier key
                 return true; //continue propagation
             }
-            if (e.type === 'click' || e.keyCode === this.keys.enter || e.keyCode === this.keys.space) { //click, space or enter
+            if (e.type === 'click' ||
+                e.keyCode === this.keys.SPACE ||
+                e.keyCode === this.keys.ENTER) {
                 e.preventDefault();
                 this.toggleMenu($target);
                 return false; //stop further propagation
-            } else if (e.keyCode === this.keys.down) {
+            } else if (e.keyCode === this.keys.DOWN) {
                 e.preventDefault();
                 this.$activeTrigger = $target;
                 this.showMenu();
@@ -150,10 +155,10 @@
                 this.activeMenuItemIdx = this.$menuItems.length; //hackish?
                 this.navigateMenuItems(e.keyCode);
                 return false; //stop further propagation
-            } else if (e.keyCode === this.keys.tab) {
+            } else if (e.keyCode === this.keys.TAB) {
                 this.hideMenu();
                 return true; //continue propagation
-            } else if (e.keyCode === this.keys.esc) {
+            } else if (e.keyCode === this.keys.ESC) {
                 if (this.$menu.hasClass('active')) {
                     e.preventDefault();
                     this.hideMenu();
@@ -172,26 +177,30 @@
             if (e.altKey || e.ctrlKey) { //modifier key
                 return true; //continue propagation
             }
-            if (e.type === 'click' || e.keyCode === this.keys.enter || e.keyCode === this.keys.space) { //click, space or enter
+            if (e.type === 'click' ||
+                e.keyCode === this.keys.SPACE ||
+                e.keyCode === this.keys.ENTER) {
                 e.preventDefault();
                 if (!$target.hasClass(this.opts.activeMenuItemsClass)) {
+                    this.opts.menuItemCallbackEarly(this);
                     this.$activeMenuItem = $target;
                     this.activeMenuItemIdx = this.$menuItems.index(e.target);
                     this.$menuItems.removeClass(this.opts.activeMenuItemsClass);
                     this.$activeMenuItem.addClass(this.opts.activeMenuItemsClass);
                     this.hideMenu();
                     this.setFocus(this.$activeTrigger);
-                    this.opts.menuItemCallback(this);
+                    this.opts.menuItemCallbackLate(this);
                 }
                 return false; //stop further propagation
-            } else if (e.keyCode === this.keys.down || e.keyCode === this.keys.up) { //up, down arrows
+            } else if (e.keyCode === this.keys.DOWN ||
+                       e.keyCode === this.keys.UP) {
                 e.preventDefault();
                 this.navigateMenuItems(e.keyCode);
                 return false; //stop further propagation
-            } else if (e.keyCode === this.keys.tab) {
+            } else if (e.keyCode === this.keys.TAB) {
                 this.hideMenu();
                 return true; //continue propagation
-            } else if (e.keyCode === this.keys.esc) {
+            } else if (e.keyCode === this.keys.ESC) {
                 e.preventDefault();
                 this.hideMenu();
                 this.setFocus(this.$activeTrigger);
@@ -243,14 +252,14 @@
             });
         },
         keys : {
-            tab     : 9,
-            enter   : 13,
-            esc     : 27,
-            space   : 32,
-            left    : 37,
-            up      : 38,
-            right   : 39,
-            down    : 40,
+            TAB     : 9,
+            ENTER   : 13,
+            ESC     : 27,
+            SPACE   : 32,
+            LEFT    : 37,
+            UP      : 38,
+            RIGHT   : 39,
+            DOWN    : 40,
             0       : 48,
             1       : 49,
             2       : 50,
@@ -261,32 +270,32 @@
             7       : 55,
             8       : 56,
             9       : 57,
-            a       : 65,
-            b       : 66,
-            c       : 67,
-            d       : 68,
-            e       : 69,
-            f       : 70,
-            g       : 71,
-            h       : 72,
-            i       : 73,
-            j       : 74,
-            k       : 75,
-            l       : 76,
-            m       : 77,
-            n       : 78,
-            o       : 79,
-            p       : 80,
-            q       : 81,
-            r       : 82,
-            s       : 83,
-            t       : 84,
-            u       : 85,
-            v       : 86,
-            w       : 87,
-            x       : 88,
-            y       : 89,
-            z       : 90
+            A       : 65,
+            B       : 66,
+            C       : 67,
+            D       : 68,
+            E       : 69,
+            F       : 70,
+            G       : 71,
+            H       : 72,
+            I       : 73,
+            J       : 74,
+            K       : 75,
+            L       : 76,
+            M       : 77,
+            N       : 78,
+            O       : 79,
+            P       : 80,
+            Q       : 81,
+            R       : 82,
+            S       : 83,
+            T       : 84,
+            U       : 85,
+            V       : 86,
+            W       : 87,
+            X       : 88,
+            Y       : 89,
+            Z       : 90
         }
     };
 }(jQuery, window.JB = window.JB || {}));
