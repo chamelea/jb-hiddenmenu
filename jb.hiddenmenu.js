@@ -15,10 +15,10 @@
             menuItemsPresentationOnlySelector : 'ul, li', //will get role="presentation" for AT
             activeMenuItemsClass : 'active',
             menuItemCallbackEarly : function(menu) {
-                window.open(encodeURI(menu.$activeMenuItem.attr('href')),'_blank'); //TODO: better uri encoding params?
+                return true;
             },
             menuItemCallbackLate : function(menu) {
-                return true;
+                window.open(encodeURI(menu.$activeMenuItem.attr('href')),'_blank'); //TODO: better uri encoding params?
             }
         };
         this.opts = $.extend(defaultOpts, opts);
