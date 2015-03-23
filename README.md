@@ -7,6 +7,6 @@ A highly customizable ARIA "menubutton" widget with full keyboard functionality 
 3. browse to your local demo.html file
 
 ##Usage
- *  (markup - menu)        `<div data-cb-hiddenmenu="abc"><ul>...<li><a>Menu Item</a></li>...</ul></div>`
- *  (markup - trigger(s))  `<a data-cb-hiddenmenu-trigger="abc">Menu Trigger</a>`
- *  (js init)              `var myHiddenMenu = new CB.HiddenMenu(menu-object, menu-object-instance-id, opts);`
+ *  (markup - menu)        `<div data-jb-hiddenmenu="abc"><ul>...<li><a>Menu Item</a></li>...</ul></div>`
+ *  (markup - trigger(s))  `<a data-jb-hiddenmenu-trigger="abc">Menu Trigger</a>`
+ *  (js init)              `var myHiddenMenu = new JB.HiddenMenu(menu-object, menu-object-instance-id, opts);`
